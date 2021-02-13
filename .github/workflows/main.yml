@@ -26,19 +26,10 @@ jobs:
       - name: Get changed discovery artifacts
         run: |
             git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
-            cat changed_files
-
-      - name: Get changed discovery artifacts2
-        run: |
-            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
-            cat changed_files
-
 
       - name: Recover deleted discovery artifacts
         run: |
-            git diff origin/main --name-only --diff-filter=D  -- '*.json' | sed 's/.*\///' > deleted_files
-            cat deleted_files | xargs -i bash -c 'git checkout origin/main -- {}'
-            cat deleted_files
+            git diff origin/main --name-only --diff-filter=D  -- '*.json' | sed 's/.*\///' | xargs -i bash -c 'git checkout origin/main -- {}'
         working-directory: ${{env.discovery-artifact-directory}}
 
       - name: Commit discovery artifacts
@@ -46,7 +37,7 @@ jobs:
           git config --global user.name 'Yoshi Automation'
           git config --global user.email 'yoshi-automation@google.com'
           git commit -am "Restore deleted discovery artifacts"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git push
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v1
