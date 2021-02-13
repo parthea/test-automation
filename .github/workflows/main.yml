@@ -66,6 +66,12 @@ jobs:
         run: |
             cat changed_files
 
+      - name: Run change_summary.py 2
+        id: get_change_summary
+        shell: bash
+        run: |
+          python3 branch/changesummary.py
+
       - name: Run change_summary.py
         id: get_change_summary
         shell: bash
