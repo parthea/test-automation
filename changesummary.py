@@ -5,8 +5,8 @@ import os
 import pandas as pd
 import numpy as np
 
-BRANCH_ARTIFACTS_DIR = 'branch/'
-MAIN_ARTIFACTS_DIR = 'main/'
+BRANCH_ARTIFACTS_DIR = './googleapiclient/discovery_cache/documents/'
+MAIN_ARTIFACTS_DIR = '../google-api-python-client/googleapiclient/discovery_cache/documents/'
 MULTIPROCESSING_NUM_PER_BATCH = 5
 MULTIPROCESSING_NUM_AGENTS = 10
 
@@ -237,9 +237,8 @@ class ChangeSummary:
         print(''.join(self._get_verbose_changes_from_dataframe(result)))
 
 
-with open(''.join([BRANCH_ARTIFACTS_DIR,'changed_files'])) as f:
-    file_list_raw = f.read().splitlines()
-    file_list = [filename.rsplit('/',1)[-1] for filename in file_list_raw]
+with open('changed_files') as f:
+    file_list = f.read().splitlines()
     ChangeSummary(BRANCH_ARTIFACTS_DIR, MAIN_ARTIFACTS_DIR,
                     file_list).detect_discovery_changes()
 

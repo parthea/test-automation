@@ -32,7 +32,8 @@ jobs:
         run: |
           git config --global user.name 'Yoshi Automation'
           git config --global user.email 'yoshi-automation@google.com'
-          git commit -am "Restore deleted discovery artifacts"
+          git add *.json
+          git commit -m "Restore deleted discovery artifacts"
           git push
 
       - name: Checkout main
@@ -59,8 +60,7 @@ jobs:
 
       - name: Get changed discovery artifacts
         run: |
-            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > branch/changed_files
-
+            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
 
       - name: show changed files
         run: |
