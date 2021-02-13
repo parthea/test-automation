@@ -62,10 +62,6 @@ jobs:
         run: |
             git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
 
-      - name: show changed files
-        run: |
-            cat branch/changed_files
-
       - name: Run change_summary.py
         id: get_change_summary
         shell: bash
