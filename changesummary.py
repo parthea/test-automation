@@ -72,6 +72,8 @@ class ChangeSummary:
         if os.path.exists(file_path):
             with open(file_path, 'r') as f:
                 dataframe_doc = pd.json_normalize(json.load(f))
+        else:
+            print(file_path+" not_found")
         return dataframe_doc
 
     def _get_discovery_differences(self, filename):
