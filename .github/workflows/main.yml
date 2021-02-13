@@ -13,12 +13,14 @@ jobs:
     name: Update Discovery Artifacts PR
     runs-on: ubuntu-latest
     env:
-      discovery-artifact-directory: ./googleapiclient/discovery_cache/documents
+      discovery-artifact-directory-recover-deleted-dir: ./recover_deleted/googleapiclient/discovery_cache/documents
+      recover-deleted-dir: ./recover_deleted
     if: ${{github.event.pull_request.user.login == 'parthea' && github.event.pull_request.title == '[CHANGE ME] Re-generated to pick up changes from discovery-artifact-manager.'}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
+          path: ./recover_deleted
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: '0'
@@ -26,7 +28,7 @@ jobs:
       - name: Recover deleted discovery artifacts
         run: |
             git diff origin/main --name-only --diff-filter=D  -- '*.json' | sed 's/.*\///' | xargs -i bash -c 'git checkout origin/main -- {}'
-        working-directory: ${{env.discovery-artifact-directory}}
+        working-directory: ${{env.discovery-artifact-directory-recover-deleted-dir}}
 
       - name: Commit discovery artifacts
         run: |
@@ -35,6 +37,7 @@ jobs:
           git add *.json
           git commit -m "Restore deleted discovery artifacts"
           git push
+        working-directory: ${{env.recover-deleted-dir}}
 
       - name: Checkout main
         uses: actions/checkout@v2
@@ -67,7 +70,6 @@ jobs:
             cat changed_files
 
       - name: Run change_summary.py 2
-        id: get_change_summary
         shell: bash
         run: |
           python3 branch/changesummary.py
