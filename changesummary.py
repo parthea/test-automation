@@ -5,8 +5,8 @@ import os
 import pandas as pd
 import numpy as np
 
-BRANCH_ARTIFACTS_DIR = './branch/googleapiclient/discovery_cache/documents/'
-MAIN_ARTIFACTS_DIR = './main/googleapiclient/discovery_cache/documents/'
+BRANCH_ARTIFACTS_DIR = 'branch/googleapiclient/discovery_cache/documents/'
+MAIN_ARTIFACTS_DIR = 'main/googleapiclient/discovery_cache/documents/'
 MULTIPROCESSING_NUM_PER_BATCH = 5
 MULTIPROCESSING_NUM_AGENTS = 10
 
