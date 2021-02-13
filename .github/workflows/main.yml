@@ -63,7 +63,8 @@ jobs:
 
       - name: Get changed discovery artifacts
         run: |
-            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
+            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > ../changed_files
+        working-directory: ./branch
 
       - name: show changed discovery artifacts
         run: |
