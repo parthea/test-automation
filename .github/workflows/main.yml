@@ -62,7 +62,7 @@ jobs:
         run: |
             git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
 
-        - name: show changed discovery artifacts
+      - name: show changed discovery artifacts
         run: |
             cat changed_files
 
