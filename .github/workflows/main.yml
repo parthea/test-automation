@@ -23,10 +23,6 @@ jobs:
           repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: '0'
 
-      - name: Get changed discovery artifacts
-        run: |
-            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
-
       - name: Recover deleted discovery artifacts
         run: |
             git diff origin/main --name-only --diff-filter=D  -- '*.json' | sed 's/.*\///' | xargs -i bash -c 'git checkout origin/main -- {}'
@@ -52,6 +48,10 @@ jobs:
           path: ./branch
           ref: ${{ env.BRANCH }}
           fetch-depth: '0'
+
+      - name: Get changed discovery artifacts
+        run: |
+            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > branch/changed_files
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v1
