@@ -1,0 +1,91 @@
+name: A workflow for updating PRs containing updates to discovery artifacts
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on pull request events but only for the main branch
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  build:
+    name: Update Discovery Artifacts PR
+    runs-on: ubuntu-latest
+    env:
+      discovery-artifact-directory: ./googleapiclient/discovery_cache/documents
+    if: ${{github.event.pull_request.user.login == 'parthea' && github.event.pull_request.title == '[CHANGE ME] Re-generated to pick up changes from discovery-artifact-manager.'}}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          fetch-depth: '0'
+
+      - name: Get changed discovery artifacts
+        run: |
+            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
+            cat changed_files
+
+      - name: Get changed discovery artifacts2
+        run: |
+            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > changed_files
+            cat changed_files
+
+
+      - name: Recover deleted discovery artifacts
+        run: |
+            git diff origin/main --name-only --diff-filter=D  -- '*.json' | sed 's/.*\///' > deleted_files
+            cat deleted_files | xargs -i bash -c 'git checkout origin/main -- {}'
+            cat deleted_files
+        working-directory: ${{env.discovery-artifact-directory}}
+
+      - name: Commit discovery artifacts
+        run: |
+          git config --global user.name 'Yoshi Automation'
+          git config --global user.email 'yoshi-automation@google.com'
+          git commit -am "Restore deleted discovery artifacts"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: Install pandas
+        run: pip3 install pandas
+
+      - name: Run change_summary.py
+        id: get_change_summary
+        shell: bash
+        run: |
+          output=$(python3 branch/changesummary.py)
+          output="${output//'%'/'%25'}"
+          output="${output//$'\n'/'%0A'}"
+          output="${output//$'\r'/'%0D'}"
+          echo "::set-output name=change_summary::$output"
+
+      - name: Update PR Body
+        uses: actions/github-script@v2.0.0
+        with:
+          script: |
+            let newBody = ${{ steps.get_change_summary.outputs.change_summary }}
+            github.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: newBody
+            })
+
+      - name: Add Semver tag for breaking changes
+        uses: actions/github-script@v2.0.0
+        if: contains(github.event.pull_request.body, ')!&#58; update the api')
+        with:
+          script: |
+            await github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ["semver: major"]
+            });
