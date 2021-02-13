@@ -237,7 +237,7 @@ class ChangeSummary:
         print(''.join(self._get_verbose_changes_from_dataframe(result)))
 
 
-with open(''.join([BRANCH_ARTIFACTS_DIR,'/changed_files'])) as f:
+with open(''.join([BRANCH_ARTIFACTS_DIR,'changed_files'])) as f:
     file_list_raw = f.read().splitlines()
     file_list = [filename.rsplit('/',1)[-1] for filename in file_list_raw]
     ChangeSummary(BRANCH_ARTIFACTS_DIR, MAIN_ARTIFACTS_DIR,
