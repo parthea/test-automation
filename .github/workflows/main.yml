@@ -39,6 +39,20 @@ jobs:
           git commit -am "Restore deleted discovery artifacts"
           git push
 
+      - name: Checkout main
+        uses: actions/checkout@v2
+        with:
+          path: ./main
+          ref: refs/heads/main
+          fetch-depth: '0'
+
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          path: ./branch
+          ref: ${{ env.BRANCH }}
+          fetch-depth: '0'
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v1
         with:
