@@ -11,13 +11,13 @@ jobs:
   build:
     name: Update Discovery Artifacts PR
     runs-on: ubuntu-latest
-steps:
-  - name: Clone discovery artifacts
-    uses: actions/checkout@v2
-    with:
-      name: googleapis/discovery-artifact-manager
-      path: ./discovery-artifact-manager
-      fetch-depth: '0'
-  - name: Check code
-    run: |
-      ls
+    steps:
+      - name: Clone discovery artifacts
+        uses: actions/checkout@v2
+        with:
+          name: googleapis/discovery-artifact-manager
+          path: ./discovery-artifact-manager
+          fetch-depth: '0'
+      - name: Check code
+        run: |
+          ls
