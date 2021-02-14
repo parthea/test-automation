@@ -43,6 +43,6 @@ jobs:
       - name: Get changed discovery artifacts
         run: |
             git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > ../changed_files
-            cat changed_files
+            cat ../changed_files
         working-directory: ./branch
 
