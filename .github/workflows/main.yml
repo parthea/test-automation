@@ -13,12 +13,23 @@ jobs:
     name: Update Discovery Artifacts PR
     runs-on: ubuntu-latest
     steps:
-      - name: Clone discovery artifacts
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          path: ./branch
+
+      - name: Create branch
+        run: |
+          git checkout -b update-discovery-artifacts
+        working-directory: ./branch
+
+      - name: Clone discovery artifacts from discovery-artifact manager
         uses: actions/checkout@v2
         with:
           repository: googleapis/discovery-artifact-manager
           path: ./discovery-artifact-manager
-          fetch-depth: '0'
-      - name: Check code
+
+      - name: Copy discovery artifacts
         run: |
-          ls discovery-artifact-manager
+          cp ./discovery-artifact-manager/discoveries/* ./branch/googleapiclient/discovery_cache/documents/
+          ls ./branch/googleapiclient/discovery_cache/documents
