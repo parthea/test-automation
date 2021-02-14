@@ -16,7 +16,7 @@ jobs:
       - name: Clone discovery artifacts
         uses: actions/checkout@v2
         with:
-          name: googleapis/discovery-artifact-manager
+          repository: googleapis/discovery-artifact-manager
           path: ./discovery-artifact-manager
           fetch-depth: '0'
       - name: Check code

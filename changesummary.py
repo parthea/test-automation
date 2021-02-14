@@ -98,6 +98,7 @@ class ChangeSummary:
             combined_docs['CurrentValue'] = np.nan
         if 'NewValue' not in combined_docs.columns:
             combined_docs['NewValue'] = np.nan
+        #todo add check if both are none
 
         docs_diff = combined_docs[
             combined_docs['CurrentValue'] != combined_docs['NewValue']
