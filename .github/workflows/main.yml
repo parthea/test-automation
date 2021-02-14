@@ -20,4 +20,4 @@ steps:
       fetch-depth: '0'
   - name: Check code
     run: |
-    ls
+      ls
