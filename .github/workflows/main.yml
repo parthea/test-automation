@@ -43,6 +43,23 @@ jobs:
       - name: Get changed discovery artifacts
         run: |
             git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > ../changed_files
-            cat ../changed_files
         working-directory: ./branch
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: Install pandas
+        run: pip3 install pandas
+
+      - name: Run change_summary.py
+        id: get_change_summary
+        shell: bash
+        run: |
+          output=$(python3 branch/changesummary.py)
+          output="${output//'%'/'%25'}"
+          output="${output//$'\n'/'%0A'}"
+          output="${output//$'\r'/'%0D'}"
+          echo "::set-output name=change_summary::$output"
 
