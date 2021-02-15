@@ -157,12 +157,14 @@ class ChangeSummary:
             ]
         return keys_to_ignore
 
-    def _get_summary_from_dataframe(self, dataframe):
-        """Returns an array of strings which contain summary information about
-            changes made to discovery artifacts based on the provided dataframe.
+    def _write_summary_to_disk(self, dataframe):
+        """Writes summary information to file about changes made to discovery
+            artifacts based on the provided dataframe. The file
+            `'allapis.summary'` is saved to the current working directory.
             args:
                 dataframe: a pandas dataframe containing summary change
                     information for all discovery artifacts
+                destination: path where the summary file should be saved
         """
         dataframe['IsFeature'] = np.where( \
             (dataframe['ChangeType'] == ChangeType.DELETED) | \
@@ -182,11 +184,15 @@ class ChangeSummary:
                                             dataframe['IsFeatureAggregate'],
                                             dataframe['IsBreakingAggregate'])
 
-        return [summary_msg for summary_msg in dataframe.Summary.unique()]
+        with open("".join(["temp/", "allapis.summary"]), 'w') as f:
+            f.writelines([summary_msg for summary_msg in dataframe.Summary.unique()])
 
-    def _get_verbose_changes_from_dataframe(self, dataframe):
-        """Returns an array of strings which contain verbose information about
-            changes made to discovery artifacts based on the provided dataframe.
+    def _write_verbose_changes_to_disk(self, dataframe):
+        """"Writes verbose information to file about changes made to discovery
+            artifacts based on the provided dataframe. A separate file is saved
+            for each api in the current working directory. The extension of the
+            files will be `'.verbose'`.
+
             args:
                 dataframe: a pandas dataframe containing verbose change
                     information for all discovery artifacts
@@ -198,12 +204,20 @@ class ChangeSummary:
         lastVersion = ''
         lastType = ChangeType.UNKNOWN
 
+        f = None
         for name, group in change_type_groups:
             currentApi = name[0]
             currentVersion = name[1]
             currentType = name[2]
 
             if lastApi != currentApi or lastVersion != currentVersion:
+                if f is not None:
+                    f.writelines(verbose_changes)
+                    f.close()
+
+                verbose_changes = []
+                filename = ".".join([currentApi, "verbose"])
+                f = open("".join(["temp/", filename]), "w")
                 verbose_changes.append('\n\n#### {0}:{1}\n\n'.format(name[0],name[1]))
                 lastApi = currentApi
                 lastVersion = currentVersion
@@ -220,25 +234,20 @@ class ChangeSummary:
                 lastType = currentType
                 verbose_changes.extend(['- {0}\n'.format(key) for key in group['Key']])
 
-        return verbose_changes
-
     def detect_discovery_changes(self):
         """Prints a summary of the changes to the discovery artifacts to the
             console.
             args: None
         """
         result = pd.DataFrame()
-
         with Pool(processes=MULTIPROCESSING_NUM_AGENTS) as pool:
             result = result.append(pool.map(self._get_discovery_differences,
                                                 self._file_list,
                                                 MULTIPROCESSING_NUM_PER_BATCH))
-
-        result = result.sort_values(by=['Name','Version','ChangeType','Key'],
-                                        ascending=True)
-        print(''.join(self._get_summary_from_dataframe(result)))
-        print(''.join(self._get_verbose_changes_from_dataframe(result)))
-
+        sort_columns = ['Name', 'Version', 'ChangeType', 'Key']
+        result.sort_values(by= sort_columns, ascending=True, inplace = True)
+        self._write_summary_to_disk(result)
+        self._write_verbose_changes_to_disk(result, )
 
 with open('changed_files') as f:
     file_list = f.read().splitlines()
