@@ -53,6 +53,9 @@ jobs:
       - name: Install pandas
         run: pip3 install pandas
 
+      - name: Install google-api-python-client
+        run: pip3 install -e .
+
       - name: Update the docs
         run: python3 branch/describe.py
 
