@@ -157,14 +157,14 @@ class ChangeSummary:
             ]
         return keys_to_ignore
 
-    def _write_summary_to_disk(self, dataframe):
+    def _write_summary_to_disk(self, dataframe, directory):
         """Writes summary information to file about changes made to discovery
             artifacts based on the provided dataframe. The file
             `'allapis.summary'` is saved to the current working directory.
             args:
                 dataframe: a pandas dataframe containing summary change
                     information for all discovery artifacts
-                destination: path where the summary file should be saved
+                directory: path where the summary file should be saved
         """
         dataframe['IsFeature'] = np.where( \
             (dataframe['ChangeType'] == ChangeType.DELETED) | \
@@ -184,10 +184,10 @@ class ChangeSummary:
                                             dataframe['IsFeatureAggregate'],
                                             dataframe['IsBreakingAggregate'])
 
-        with open("".join(["temp/", "allapis.summary"]), 'w') as f:
+        with open("".join([directory,"/", "allapis.summary"]), 'w') as f:
             f.writelines([summary_msg for summary_msg in dataframe.Summary.unique()])
 
-    def _write_verbose_changes_to_disk(self, dataframe):
+    def _write_verbose_changes_to_disk(self, dataframe, directory):
         """"Writes verbose information to file about changes made to discovery
             artifacts based on the provided dataframe. A separate file is saved
             for each api in the current working directory. The extension of the
@@ -196,6 +196,7 @@ class ChangeSummary:
             args:
                 dataframe: a pandas dataframe containing verbose change
                     information for all discovery artifacts
+                directory: path where the summary file should be saved
         """
         verbose_changes = []
         change_type_groups = dataframe[['Name','Version','ChangeType','Key']].groupby(['Name','Version','ChangeType'])
@@ -217,7 +218,7 @@ class ChangeSummary:
 
                 verbose_changes = []
                 filename = ".".join([currentApi, "verbose"])
-                f = open("".join(["temp/", filename]), "w")
+                f = open("".join([directory,"/", filename]), "w")
                 verbose_changes.append('\n\n#### {0}:{1}\n\n'.format(name[0],name[1]))
                 lastApi = currentApi
                 lastVersion = currentVersion
@@ -246,8 +247,10 @@ class ChangeSummary:
                                                 MULTIPROCESSING_NUM_PER_BATCH))
         sort_columns = ['Name', 'Version', 'ChangeType', 'Key']
         result.sort_values(by= sort_columns, ascending=True, inplace = True)
-        self._write_summary_to_disk(result)
-        self._write_verbose_changes_to_disk(result, )
+
+        os.makedirs(os.path.dirname("temp/"), exist_ok=True)
+        self._write_summary_to_disk(result, "temp/")
+        self._write_verbose_changes_to_disk(result, "temp/")
 
 if __name__== "__main__":
     with open('changed_files') as f:
