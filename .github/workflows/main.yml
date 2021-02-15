@@ -41,8 +41,8 @@ jobs:
         working-directory: ./discovery-artifact-manager/discoveries
 
       - name: Get changed discovery artifacts
-        run: |
-            git diff origin/main --name-only -- '*.json' | sed 's/.*\///' > ../changed_files
+        run: git diff origin/main --name-only -- '*.json' |
+              sed 's/.*\///' > ../changed_files
         working-directory: ./branch
 
       - name: Set up Python 3.9
@@ -53,13 +53,31 @@ jobs:
       - name: Install pandas
         run: pip3 install pandas
 
-      - name: Run change_summary.py
-        id: get_change_summary
-        shell: bash
-        run: |
-          output=$(python3 branch/changesummary.py)
-          output="${output//'%'/'%25'}"
-          output="${output//$'\n'/'%0A'}"
-          output="${output//$'\r'/'%0D'}"
-          echo "::set-output name=change_summary::$output"
+      - name: Update the docs
+        run: python3 describe.py
 
+      - name: Run Change Summary
+        run: python3 branch/changesummary.py
+
+      - name: Commit changes
+        run: ./create_commits.sh
+
+      # - name: Copy output for PR Body
+      #   run: |
+      #     output=$(cat allapis.summary)
+      #     output="${output//'%'/'%25'}"
+      #     output="${output//$'\n'/'%0A'}"
+      #     output="${output//$'\r'/'%0D'}"
+      #     echo "::set-output name=change_summary::$output"
+
+        # - name: Update PR Body
+        # uses: actions/github-script@v2.0.0
+        # with:
+        #   script: |
+        #     let newBody = ${{ steps.get_change_summary.outputs.change_summary }}
+        #     github.issues.update({
+        #       issue_number: context.issue.number,
+        #       owner: context.repo.owner,
+        #       repo: context.repo.repo,
+        #       body: newBody
+        #     })
