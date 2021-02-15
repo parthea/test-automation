@@ -58,7 +58,8 @@ jobs:
         working-directory: ./branch
 
       - name: Update the docs
-        run: python3 branch/describe.py
+        run: python3 describe.py
+        working-directory: ./branch
 
       - name: Run Change Summary
         run: python3 branch/changesummary.py
