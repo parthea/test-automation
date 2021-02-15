@@ -5,8 +5,8 @@ import os
 import pandas as pd
 import numpy as np
 
-BRANCH_ARTIFACTS_DIR = 'branch/googleapiclient/discovery_cache/documents/'
-MAIN_ARTIFACTS_DIR = 'main/googleapiclient/discovery_cache/documents/'
+BRANCH_ARTIFACTS_DIR = 'googleapiclient/discovery_cache/documents/'
+MAIN_ARTIFACTS_DIR = '../main/googleapiclient/discovery_cache/documents/'
 MULTIPROCESSING_NUM_PER_BATCH = 5
 MULTIPROCESSING_NUM_AGENTS = 10
 
@@ -249,10 +249,11 @@ class ChangeSummary:
         self._write_summary_to_disk(result)
         self._write_verbose_changes_to_disk(result, )
 
-with open('branch/changed_files') as f:
-    file_list = f.read().splitlines()
-    ChangeSummary(BRANCH_ARTIFACTS_DIR, MAIN_ARTIFACTS_DIR,
-                    file_list).detect_discovery_changes()
+if __name__== "__main__":
+    with open('changed_files') as f:
+        file_list = f.read().splitlines()
+        ChangeSummary(BRANCH_ARTIFACTS_DIR, MAIN_ARTIFACTS_DIR,
+                        file_list).detect_discovery_changes()
 
 
 
