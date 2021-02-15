@@ -62,10 +62,12 @@ jobs:
         working-directory: ./branch
 
       - name: Run Change Summary
-        run: python3 branch/changesummary.py
+        run: python3 changesummary.py
+        working-directory: ./branch
 
       - name: Commit changes
         run: ./create_commits.sh
+        working-directory: ./branch
 
       # - name: Copy output for PR Body
       #   run: |
