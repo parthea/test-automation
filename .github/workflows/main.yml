@@ -54,7 +54,7 @@ jobs:
         run: pip3 install pandas
 
       - name: Update the docs
-        run: python3 describe.py
+        run: python3 branch/describe.py
 
       - name: Run Change Summary
         run: python3 branch/changesummary.py
