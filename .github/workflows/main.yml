@@ -55,6 +55,7 @@ jobs:
 
       - name: Install google-api-python-client
         run: pip3 install -e .
+        working-directory: ./branch
 
       - name: Update the docs
         run: python3 branch/describe.py
