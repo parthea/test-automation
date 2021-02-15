@@ -249,7 +249,7 @@ class ChangeSummary:
         self._write_summary_to_disk(result)
         self._write_verbose_changes_to_disk(result, )
 
-with open('changed_files') as f:
+with open('branch/changed_files') as f:
     file_list = f.read().splitlines()
     ChangeSummary(BRANCH_ARTIFACTS_DIR, MAIN_ARTIFACTS_DIR,
                     file_list).detect_discovery_changes()
