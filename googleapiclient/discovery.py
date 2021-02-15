@@ -49,7 +49,7 @@ import httplib2
 import uritemplate
 import google.api_core.client_options
 from google.auth.transport import mtls
-from google.auth.exceptions import MutualTLSChannelError
+from google.auth.exceptions import MutualTLSChannelError, DefaultCredentialsError
 
 try:
     import google_auth_httplib2
@@ -551,10 +551,13 @@ def build_from_document(
             # If the user didn't pass in credentials, attempt to acquire application
             # default credentials.
             if credentials is None:
-                credentials = _auth.default_credentials(
-                    scopes=client_options.scopes,
-                    quota_project_id=client_options.quota_project_id,
-                )
+                try:
+                    credentials = _auth.default_credentials(
+                        scopes=client_options.scopes,
+                        quota_project_id=client_options.quota_project_id,
+                    )
+                except DefaultCredentialsError:
+                    pass
 
             # The credentials need to be scoped.
             # If the user provided scopes via client_options don't override them
