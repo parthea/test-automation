@@ -70,7 +70,7 @@ jobs:
         working-directory: ./branch
 
       - name: Push changes
-        run: git push origin update-discovery-artifacts
+        run: git push -f --set-upstream origin update-discovery-artifacts
         working-directory: ./branch
 
 
