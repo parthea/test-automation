@@ -12,7 +12,7 @@ do
         git add 'docs/dyn/'$name'_*.html'
         cat $API_SUMMARY_PATH
         commitmsg=`cat $API_SUMMARY_PATH`
-        git commit googleapiclient/discovery_cache/documents/$name.*.json docs/dyn/$name_*.html -m "$commitmsg"
+        git commit 'googleapiclient/discovery_cache/documents/'$name'.*.json' 'docs/dyn/'$name'_*.html' -m "$commitmsg"
     fi
 done < changed_files
 exit 0
