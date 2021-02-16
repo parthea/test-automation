@@ -37,8 +37,8 @@ jobs:
 
       - name: Copy discovery artifacts
         run: |
-          cp *.json ../../branch/googleapiclient/discovery_cache/documents/
-        working-directory: ./discovery-artifact-manager/discoveries
+          cp discovery-artifact-manager/discoveries/*.json googleapiclient/discovery_cache/documents/
+        working-directory: ./branch
 
       - name: Get changed discovery artifacts
         run: git diff origin/main --name-only -- '*.json' |
@@ -63,11 +63,15 @@ jobs:
 
       - name: Run Change Summary
         run: python3 changesummary.py
-        working-directory: ./branch
 
       - name: Commit changes
         run: ./create_commits.sh
         working-directory: ./branch
+
+      - name: Push changes
+        run: git push origin update-discovery-artifacts
+        working-directory: ./branch
+
 
       # - name: Copy output for PR Body
       #   run: |
