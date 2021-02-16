@@ -7,12 +7,11 @@ do
     name=`echo $api | cut -d '.' -f 1`
     API_SUMMARY_PATH=temp/$name.verbose
     if [ -f "$API_SUMMARY_PATH" ]; then
-        git reset -q
         git add googleapiclient/discovery_cache/documents/$name.*.json
-        git add docs/dyn/$name_*
+        git add docs/dyn/$name_*.html
         cat $API_SUMMARY_PATH
         commitmsg=`cat $API_SUMMARY_PATH`
-        git commit -m "$commitmsg"
+        git commit googleapiclient/discovery_cache/documents/$name.*.json docs/dyn/$name_*.html -m "$commitmsg"
     fi
 done < changed_files
 
