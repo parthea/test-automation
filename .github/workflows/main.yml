@@ -16,11 +16,13 @@ jobs:
       - name: Check out main
         uses: actions/checkout@v2
         with:
+          ref: refs/heads/main
           path: ./main
 
       - name: Check out working directory for changes
         uses: actions/checkout@v2
         with:
+          ref: refs/heads/main
           path: ./branch
           fetch-depth: '0'
 
