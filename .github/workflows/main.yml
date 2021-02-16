@@ -13,18 +13,25 @@ jobs:
     name: Update Discovery Artifacts PR
     runs-on: ubuntu-latest
     steps:
-      - name: Check out main
-        uses: actions/checkout@v2
-        with:
-          ref: refs/heads/main
-          path: ./main
-
       - name: Check out working directory for changes
         uses: actions/checkout@v2
         with:
           ref: refs/heads/main
           path: ./branch
           fetch-depth: '0'
+
+      - name: Check out branch with scripts
+        uses: actions/checkout@v2
+        with:
+          ref: refs/heads/first-action
+          path: ./branch_with_scripts
+          fetch-depth: '0'
+
+      - name: Check out main
+        uses: actions/checkout@v2
+        with:
+          ref: refs/heads/main
+          path: ./main
 
       - name: Create branch
         run: |
@@ -36,6 +43,12 @@ jobs:
         with:
           repository: googleapis/discovery-artifact-manager
           path: ./discovery-artifact-manager
+
+      - name: Copy scripts
+        run: |
+          cp ../branch_with_scripts/changesummary.py changesummary.py
+          cp ../branch_with_scripts/create_commits.sh create_commits.sh
+        working-directory: ./branch
 
       - name: Copy discovery artifacts
         run: |
