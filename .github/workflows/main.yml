@@ -37,7 +37,7 @@ jobs:
 
       - name: Copy discovery artifacts
         run: |
-          cp discovery-artifact-manager/discoveries/*.json googleapiclient/discovery_cache/documents/
+          cp ../discovery-artifact-manager/discoveries/*.json googleapiclient/discovery_cache/documents/
         working-directory: ./branch
 
       - name: Get changed discovery artifacts
