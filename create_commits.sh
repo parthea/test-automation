@@ -8,8 +8,8 @@ do
     API_SUMMARY_PATH=temp/$name.verbose
     if [ -f "$API_SUMMARY_PATH" ]; then
         echo "Creating commits for $name\n"
-        git add googleapiclient/discovery_cache/documents/$name.*.json
-        git add docs/dyn/$name_*.html
+        git add 'googleapiclient/discovery_cache/documents/'$name'.*.json'
+        git add 'docs/dyn/'$name'_*.html'
         cat $API_SUMMARY_PATH
         commitmsg=`cat $API_SUMMARY_PATH`
         git commit googleapiclient/discovery_cache/documents/$name.*.json docs/dyn/$name_*.html -m "$commitmsg"
