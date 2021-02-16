@@ -14,4 +14,4 @@ do
         git commit googleapiclient/discovery_cache/documents/$name.*.json docs/dyn/$name_*.html -m "$commitmsg"
     fi
 done < changed_files
-
+exit 0
