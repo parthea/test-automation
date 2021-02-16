@@ -59,6 +59,9 @@ jobs:
         run: pip3 install -e .
         working-directory: ./branch
 
+      - name: Patch to run the next step
+        run: sed -i -e 's/if credentials is None/if False/g' googleapiclient/discovery.py
+
       - name: Update the docs
         run: python3 describe.py
         working-directory: ./branch
