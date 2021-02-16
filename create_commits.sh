@@ -8,8 +8,8 @@ do
     API_SUMMARY_PATH=temp/$name.verbose
     if [ -f "$API_SUMMARY_PATH" ]; then
         git reset
-        git add googleapiclient/discovery_cache/documents/$name.*.json)
-        git add docs/dyn/$name_*)
+        git add googleapiclient/discovery_cache/documents/$name.*.json
+        git add docs/dyn/$name_*
         commitmsg=`cat $API_SUMMARY_PATH`
         git commit -m "$commitmsg"
     fi
