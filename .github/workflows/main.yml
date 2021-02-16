@@ -61,6 +61,7 @@ jobs:
 
       - name: Patch to run the next step
         run: sed -i -e 's/if credentials is None/if False/g' googleapiclient/discovery.py
+        working-directory: ./branch
 
       - name: Update the docs
         run: python3 describe.py
