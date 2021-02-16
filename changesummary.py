@@ -255,6 +255,7 @@ class ChangeSummary:
 if __name__== "__main__":
     with open('changed_files') as f:
         file_list = f.read().splitlines()
+        file_list = [name if name != "index.json" for name in file_list]
         ChangeSummary(BRANCH_ARTIFACTS_DIR, MAIN_ARTIFACTS_DIR,
                         file_list).detect_discovery_changes()
 
