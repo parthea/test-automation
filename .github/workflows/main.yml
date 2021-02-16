@@ -63,6 +63,7 @@ jobs:
 
       - name: Run Change Summary
         run: python3 changesummary.py
+        working-directory: ./branch
 
       - name: Commit changes
         run: ./create_commits.sh
