@@ -262,7 +262,7 @@ if __name__== "__main__":
         file_list = f.read().splitlines()
         file_list = [name for name in file_list if name != "index.json"]
         ChangeSummary(BRANCH_ARTIFACTS_DIR, MAIN_ARTIFACTS_DIR,
-                        file_list).detect_discovery_changes()
+                        file_list[0:15]).detect_discovery_changes()
 
 
 
