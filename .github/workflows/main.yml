@@ -109,7 +109,7 @@ jobs:
           script: |
               const {owner, repo} = context.repo
               const branch = 'update-discovery-artifacts'
-              const pr_body = ${{ steps.pr_body.outputs.change_summary }}
+              let pr_body = ${{ steps.pr_body.outputs.change_summary }}
               const pull_requests = await github.pulls.list({
                   owner: owner,
                   repo: repo,
