@@ -114,7 +114,7 @@ jobs:
               const pull_requests = await github.pulls.list({
                   owner: owner,
                   repo: repo,
-                  head: owner:branch,
+                  head: `${owner}:${branch}`,
                   state: 'open'
                 });
 
@@ -134,7 +134,7 @@ jobs:
                                         owner: owner,
                                         repo: repo,
                                         base: "main",
-                                        head: owner:branch,
+                                        head: `${owner}:${branch}`,
                                         title: pr_title,
                                         body: pr_body
                                     });
