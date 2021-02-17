@@ -129,6 +129,18 @@ jobs:
                 });
                 console.log('Updated PR')
               }
+              else {
+                const createPrResult = await github.pulls.create({
+                                        owner: owner,
+                                        repo: repo,
+                                        base: "main",
+                                        head: `${owner}:${branch}`,
+                                        title: pr_title,
+                                        body: pr_body
+                                    });
+                prNumber = createPrResult.data.number
+                console.log('Created PR')
+              }
 
       # - name: Copy output for PR Body
       #   run: |
