@@ -121,9 +121,9 @@ jobs:
                 throw err
                 return
               }
-              console.log(pull_requests.data.length)
-              console.log(pull_requests.data[0])
-              console.log(pull_requests.data[1])
+              console.log(pulls.data.length)
+              console.log(pulls.data[0])
+              console.log(pulls.data[1])
       # const {owner, repo} = context.repo
       # const branch = 'update-discovery-artifacts'
       # const pull_requests = await github.pulls.list({
