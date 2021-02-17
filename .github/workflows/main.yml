@@ -129,25 +129,7 @@ jobs:
                 });
                 console.log('Updated PR')
               }
-              else {
-                const createPrResult = await github.pulls.create({
-                                        owner: owner,
-                                        repo: repo,
-                                        base: "main",
-                                        head: `${owner}:${branch}`,
-                                        title: pr_title,
-                                        body: pr_body
-                                    });
-                prNumber = createPrResult.data.number
-                console.log('Created PR')
-              }
 
-              github.issues.addLabels({
-                owner: owner,
-                repo: repo,
-                issue_number: prNumber,
-                labels: [auto-merge']
-              });
       # - name: Copy output for PR Body
       #   run: |
       #     output=$(cat allapis.summary)
