@@ -115,7 +115,7 @@ jobs:
                   base: 'master',
                   state: 'open'
                 });
-                console.log(pull_requests.data[0])
+              console.log(pull_requests.data.length)
 
               let prNumber = 0;
               let newBody = "test2"
