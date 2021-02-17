@@ -114,7 +114,7 @@ jobs:
                 pulls = await github.pulls.list({
                   owner: owner,
                   repo: repo,
-                  head: `${owner}:repo-sync`,
+                  head: `${owner}:update-discovery-artifacts`,
                   state: 'open'
                 });
               } catch(err) {
