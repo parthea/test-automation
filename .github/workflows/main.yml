@@ -142,6 +142,12 @@ jobs:
                 console.log('Created PR')
               }
 
+              github.issues.addLabels({
+                owner: owner,
+                repo: repo,
+                issue_number: prNumber,
+                labels: ['auto-merge']
+              });
       # - name: Copy output for PR Body
       #   run: |
       #     output=$(cat allapis.summary)
