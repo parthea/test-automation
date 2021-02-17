@@ -94,16 +94,17 @@ jobs:
 
       - name: Create PR
         uses: actions/github-script@v2.0.0
-        script: |
-          let newBody = "test2"
-          github.pulls.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: "test1",
-            head: setting.head,
-            base: setting.base,
-            body: newBody
-          })
+        with:
+          script: |
+            let newBody = "test2"
+            github.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "test1",
+              head: setting.head,
+              base: setting.base,
+              body: newBody
+            })
 
       # - name: Copy output for PR Body
       #   run: |
