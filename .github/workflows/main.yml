@@ -98,7 +98,7 @@ jobs:
         run: |
           output=$(cat temp/allapis.summary)
           output="${output//'%'/'%25'}"
-          output=g
+          output="${output//$'\r'/'%0A'}"
           output="${output//$'\r'/'%0D'}"
           echo "::set-output name=change_summary::$output"
         working-directory: ./branch
