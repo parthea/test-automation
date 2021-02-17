@@ -126,7 +126,7 @@ jobs:
                 title: "test1",
                 body: newBody
               });
-              console.log('Updated PR');
+              console.log('Updated PR')
             } else {
                 const createPrResult = await github.pulls.create({
                   owner: context.repo.owner,
@@ -137,7 +137,7 @@ jobs:
                   body: newBody
               });
             prNumber = createPrResult.data.number;
-            console.log('Created PR');
+            console.log('Created PR')
 
             github.issues.addLabels({
               owner: context.repo.owner,
