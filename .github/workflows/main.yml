@@ -109,38 +109,24 @@ jobs:
           script: |
               const {owner, repo} = context.repo
               const branch = 'update-discovery-artifacts'
-              const pulls = await github.pulls.list({
+              const pull_requests = await github.pulls.list({
                   owner: owner,
                   repo: repo,
                   head: `${owner}:${branch}`,
                   state: 'open'
                 });
 
-              console.log(pulls.data.length)
-              console.log(pulls.data[0])
-              console.log(pulls.data[1])
-
-      # const pull_requests = await github.pulls.list({
-      #     owner: owner
-      #     repo: repo,
-      #     head: branch,
-      #     base: 'main',
-      #     state: 'open'
-      #   });
-      # console.log(pull_requests.data.length)
-
-      # let newBody = ${{ steps.pr_body.outputs.change_summary }}
-      # if (pull_requests.data.length > 0) {
-      #   prNumber = pull_requests.data[0].number
-      #   await github.pulls.update({
-      #     owner: context.repo.owner,
-      #     repo: context.repo.repo,
-      #     pull_number: prNumber,
-      #     title: "test1",
-      #     body: "body1"
-      #   });
-      #   console.log('Updated PR')
-      # }
+              if (pull_requests.data.length == 1) {
+                prNumber = pull_requests.data[0].number
+                await github.pulls.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prNumber,
+                  title: "test1",
+                  body: "body1"
+                });
+                console.log('Updated PR')
+              }
       # else {
       #     const createPrResult = await github.pulls.create({
       #       owner: context.repo.owner,
