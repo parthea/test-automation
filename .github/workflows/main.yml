@@ -136,9 +136,9 @@ jobs:
                   title: "test2",
                   body: newBody
               });
-              prNumber = createPrResult.data.number;
-              console.log('Created PR');
-            }
+            prNumber = createPrResult.data.number;
+            console.log('Created PR');
+
             github.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
