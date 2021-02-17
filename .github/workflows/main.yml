@@ -107,25 +107,19 @@ jobs:
         uses: actions/github-script@v2.0.0
         with:
           script: |
-              let pulls;
-              const owner = context.repo.owner
-              const repo = context.repo.repo
-              try {
-                pulls = await github.pulls.list({
+              const {owner, repo} = context.repo
+              const branch = 'update-discovery-artifacts'
+              const pulls = await github.pulls.list({
                   owner: owner,
                   repo: repo,
-                  head: `${owner}:update-discovery-artifacts`,
+                  head: `${owner}:${branch}`,
                   state: 'open'
                 });
-              } catch(err) {
-                throw err
-                return
-              }
+
               console.log(pulls.data.length)
               console.log(pulls.data[0])
               console.log(pulls.data[1])
-      # const {owner, repo} = context.repo
-      # const branch = 'update-discovery-artifacts'
+
       # const pull_requests = await github.pulls.list({
       #     owner: owner
       #     repo: repo,
