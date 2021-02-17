@@ -101,8 +101,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: "test1",
-              head: setting.head,
-              base: setting.base,
+              head: refs/heads/update-discovery-artifacts,
+              base: refs/heads/main,
               body: newBody
             })
 
