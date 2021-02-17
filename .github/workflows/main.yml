@@ -109,10 +109,10 @@ jobs:
           script: |
               const {owner, repo} = context.repo
               const branch = 'update-discovery-artifacts'
-              const pull_requests = await github.pulls.list({
+              let pull_requests = await github.pulls.list({
                   owner: owner
                   repo: repo,
-                  head: branch,
+                  head: `${owner}:branch`,
                   base: 'main',
                   state: 'open'
                 });
