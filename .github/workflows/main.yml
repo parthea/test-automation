@@ -109,7 +109,6 @@ jobs:
           script: |
 
               const pull_requests = await github.pulls.list({
-                  owner: context.repo.owner,
                   repo: context.repo.repo,
                   head: 'update-discovery-artifacts',
                   base: 'main',
