@@ -109,24 +109,12 @@ jobs:
           script: |
 
               const pull_requests = await github.pulls.list({
-                  # owner: context.repo.owner,
-                  # repo: context.repo.repo,
-                  # head: 'update-discovery-artifacts',
-                  # base: 'master',
+
                   state: 'open'
                 });
               console.log(pull_requests.data.length)
 
-              # let prNumber = 0;
-              # let newBody = "test2"
-              # github.pulls.create({
-              #   owner: context.repo.owner,
-              #   repo: context.repo.repo,
-              #   title: "test1",
-              #   head: "update-discovery-artifacts",
-              #   base: "main",
-              #   body: newBody
-              # })
+
       # let newBody = ${{ steps.pr_body.outputs.change_summary }}
       # if (pull_requests.data.length > 0) {
       #   prNumber = pull_requests.data[0].number
