@@ -114,7 +114,7 @@ jobs:
               base: 'master'
               state: 'open'
             });
-            console.log({pull_requests/data})
+            console.log({pull_requests.data})
             let newBody = ${{ steps.pr_body.outputs.change_summary }}
             let prNumber = 0;
 
