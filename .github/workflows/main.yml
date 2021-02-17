@@ -98,7 +98,7 @@ jobs:
         run: |
           output=$(cat temp/allapis.summary)
           output="${output//'%'/'%25'}"
-          output="${output//$'\r'/'%0A'}"
+          output="${output//$'\n'/'%0A'}"
           output="${output//$'\r'/'%0D'}"
           echo "::set-output name=change_summary::$output"
         working-directory: ./branch
@@ -109,7 +109,8 @@ jobs:
           script: |
               const {owner, repo} = context.repo
               const branch = 'update-discovery-artifacts'
-              let pr_body = ''
+              let pr_body = ${{ steps.pr_body.outputs.change_summary }}
+              ${{ steps.get_change_summary.outputs.change_summary }}
               let pr_title = 'Update Discovery Artifacts'
               const pull_requests = await github.pulls.list({
                   owner: owner,
