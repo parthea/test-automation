@@ -116,7 +116,37 @@ jobs:
             });
             console.log(pull_requests.data[0])
             let newBody = ${{ steps.pr_body.outputs.change_summary }}
+            let prNumber = 0;
 
+# if (pull_requests.data.length > 0) {
+#   prNumber = pull_requests.data[0].number
+#   await github.pulls.update({
+#     owner: context.repo.owner,
+#     repo: context.repo.repo,
+#     pull_number: prNumber,
+#     title: "test1",
+#     body: newBody
+#   });
+#   console.log('Updated PR')
+# }
+# else {
+#     const createPrResult = await github.pulls.create({
+#       owner: context.repo.owner,
+#       repo: context.repo.repo,
+#       base: "main",
+#       head: "update-discovery-artifacts",
+#       title: "test2",
+#       body: newBody
+#   });
+# prNumber = createPrResult.data.number
+# console.log('Created PR')
+
+# github.issues.addLabels({
+#   owner: context.repo.owner,
+#   repo: context.repo.repo,
+#   issue_number: prNumber,
+#   labels: [auto-merge']
+# });
       # - name: Copy output for PR Body
       #   run: |
       #     output=$(cat allapis.summary)
